@@ -17,11 +17,79 @@ message_responses = {
         "what are you?": "Kono Dio Da!",
         "what are you": "Kono Dio Da!",
         "hi": "_Oh, you're approaching me?_",
+        "help": """Welcome to JoJo Bot, the commands are 
+                    -- what/who are you?
+                    -- hi
+                    -- hello there
+                    -- meme
+                    -- jmeme
+                    -- /jmeme
+                    -- /meme
+                    -- /help
+                    -- help
+                    -- ?
+                    -- /?""",
+        "help?": """Welcome to JoJo Bot, the commands are 
+                    -- what/who are you?
+                    -- hi
+                    -- hello there
+                    -- meme
+                    -- jmeme
+                    -- /jmeme
+                    -- /meme
+                    -- /help
+                    -- help
+                    -- ?
+                    -- /?""", 
+        "/help": """Welcome to JoJo Bot, the commands are 
+                    -- what/who are you?
+                    -- hi
+                    -- hello there
+                    -- meme
+                    -- jmeme
+                    -- /jmeme
+                    -- /meme
+                    -- /help
+                    -- help
+                    -- ?
+                    -- /?""",
+        "/?": """Welcome to JoJo Bot, the commands are 
+                -- what/who are you?
+                -- hi
+                -- hello there
+                -- meme
+                -- jmeme
+                -- /jmeme
+                -- /meme
+                -- /help
+                -- help
+                -- ?
+                -- /?""", 
+        "?": """Welcome to JoJo Bot, the commands are 
+                -- what/who are you?
+                -- hi
+                -- hello there
+                -- meme
+                -- jmeme
+                -- /jmeme
+                -- /meme
+                -- /help
+                -- help
+                -- ?
+                -- /?"""
         }
 gif_responses = [
         "hello there",
         "hello there!",
         "hello there."
+        ]
+
+help_reponses = [
+        "help",
+        "help?",
+        "/help",
+        "/?",
+        "?"
         ]
 
 meme_responses = [
@@ -33,11 +101,27 @@ meme_responses = [
 
 gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
 
-default_message = "Wryyyyyyy"
+default_message = "Wryyyyyyy! If your looking for options try /?,/help or reply to this with ?,help"
 LAST_UPDATE_FILE = "last_id.txt"
 
 with open(LAST_UPDATE_FILE, "rt") as f:
     last_update = int(f.read()) + 1
+
+def send_message(text, chat_id):
+    url = "{}/sendMessage".format(BASE_URL)
+    params = {
+        "chat_id": chat_id,
+        "text": text,
+        "parse_mode": "Markdown"
+    }
+    response = requests.get(url=url, params=params)
+    if response.status_code != requests.codes.ok: # pylint: disable=no-member
+        print("*"*20, "ERROR", "*"*20)
+        pprint.pprint(response.json())
+        print("*"*45)
+    else:
+        print(f"Sent message to chat_id {chat_id}, replying to '{text}'")
+
 
 def send_message(text, chat_id):
     url = "{}/sendMessage".format(BASE_URL)
