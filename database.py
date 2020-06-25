@@ -82,6 +82,36 @@ writer.add_document(
     audio_url="https://www.myinstants.com/media/sounds/yoshikage-kira-theme-ringtone.mp3",
     title="Kira Yoshikage Theme",
     id="yoshikage-kira-theme-ringtone")
+writer.add_document(
+    keywords="you utter fool stroheim german",
+    audio_url="https://www.myinstants.com/media/sounds/img_7808.mp3",
+    title="You Utttter fool",
+    id="You Utttter fool")
+writer.add_document(
+    keywords="doppio phone ring turururu",
+    audio_url="https://www.myinstants.com/media/sounds/doppio-ringing.mp3",
+    title="Tu rururururu",
+    id="doppio-ringing")
+writer.add_document(
+    keywords="oi josuke okuyasu yo",
+    audio_url="https://www.myinstants.com/media/sounds/img_4189.mp3",
+    title="Tu rururururu",
+    id="doppio-ringing")
+writer.add_document(
+    keywords="arrivederci bruno bucciarati",
+    audio_url="https://www.myinstants.com/media/sounds/arrivederci.mp3",
+    title="Arrivederci",
+    id="arrivederci")
+writer.add_document(
+    keywords="muda muda muda",
+    audio_url="https://www.myinstants.com/media/sounds/muda-muda-online-audio-converter.mp3",
+    title="muda muda muda",
+    id="muda muda muda")
+writer.add_document(
+    keywords="HINJAKU HINJAKU",
+    audio_url="https://www.myinstants.com/media/sounds/tumblr_n5dxckfvob1sh11j9o1.mp3",
+    title="HINJAKU HINJAKU",
+    id="HINJAKU HINJAKU")
 writer.commit()
 
 parser = qparser.QueryParser("keywords", ix.schema)
