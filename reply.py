@@ -11,73 +11,32 @@ load_dotenv()
 
 TOKEN = os.getenv("TOKEN")
 BASE_URL = "https://api.telegram.org/bot{}".format(TOKEN)
+HELP_TEXT = """Welcome to JoJo Bot, the commands are 
+                    -- what/who are you?
+                    -- hi
+                    -- hello there
+                    -- meme
+                    -- jmeme
+                    -- /jmeme
+                    -- /meme
+                    -- /help
+                    -- help
+                    -- ?
+                    -- /?
+You can tag the bot from a chat to get a soundboard!"""
 message_responses = {
         "who are you?": "Kono Dio Da!",
         "who are you": "Kono Dio Da!",
         "what are you?": "Kono Dio Da!",
         "what are you": "Kono Dio Da!",
         "hi": "_Oh, you're approaching me?_",
-        "help": """Welcome to JoJo Bot, the commands are 
-                    -- what/who are you?
-                    -- hi
-                    -- hello there
-                    -- meme
-                    -- jmeme
-                    -- /jmeme
-                    -- /meme
-                    -- /help
-                    -- help
-                    -- ?
-                    -- /?""",
-        "help?": """Welcome to JoJo Bot, the commands are 
-                    -- what/who are you?
-                    -- hi
-                    -- hello there
-                    -- meme
-                    -- jmeme
-                    -- /jmeme
-                    -- /meme
-                    -- /help
-                    -- help
-                    -- ?
-                    -- /?""", 
-        "/help": """Welcome to JoJo Bot, the commands are 
-                    -- what/who are you?
-                    -- hi
-                    -- hello there
-                    -- meme
-                    -- jmeme
-                    -- /jmeme
-                    -- /meme
-                    -- /help
-                    -- help
-                    -- ?
-                    -- /?""",
-        "/?": """Welcome to JoJo Bot, the commands are 
-                -- what/who are you?
-                -- hi
-                -- hello there
-                -- meme
-                -- jmeme
-                -- /jmeme
-                -- /meme
-                -- /help
-                -- help
-                -- ?
-                -- /?""", 
-        "?": """Welcome to JoJo Bot, the commands are 
-                -- what/who are you?
-                -- hi
-                -- hello there
-                -- meme
-                -- jmeme
-                -- /jmeme
-                -- /meme
-                -- /help
-                -- help
-                -- ?
-                -- /?"""
+        "help": HELP_TEXT,
+        "help?": HELP_TEXT,
+        "/help": HELP_TEXT,
+        "/?": HELP_TEXT,
+        "?": HELP_TEXT
         }
+
 gif_responses = [
         "hello there",
         "hello there!",
@@ -106,22 +65,6 @@ LAST_UPDATE_FILE = "last_id.txt"
 
 with open(LAST_UPDATE_FILE, "rt") as f:
     last_update = int(f.read()) + 1
-
-def send_message(text, chat_id):
-    url = "{}/sendMessage".format(BASE_URL)
-    params = {
-        "chat_id": chat_id,
-        "text": text,
-        "parse_mode": "Markdown"
-    }
-    response = requests.get(url=url, params=params)
-    if response.status_code != requests.codes.ok: # pylint: disable=no-member
-        print("*"*20, "ERROR", "*"*20)
-        pprint.pprint(response.json())
-        print("*"*45)
-    else:
-        print(f"Sent message to chat_id {chat_id}, replying to '{text}'")
-
 
 def send_message(text, chat_id):
     url = "{}/sendMessage".format(BASE_URL)
@@ -205,7 +148,7 @@ with ix.searcher() as searcher:
                 if "message" in update and \
                    "text" in update["message"] and not update["message"]["from"]["is_bot"]:
                     text = update["message"]["text"].lower()
-                    print(f"Got message '{text}' from chat_id {update['message']['chat']['id']}")
+                    print(f"\nGot message '{text}' from chat_id {update['message']['chat']['id']}")
                     if text in message_responses:
                         send_message(message_responses[text], update["message"]["chat"]["id"])
                     elif text in gif_responses:
@@ -216,7 +159,7 @@ with ix.searcher() as searcher:
                         send_message(default_message,
                                      update["message"]["chat"]["id"])
                 if "inline_query" in update:
-                    print("Got inline query")
+                    print("\nGot inline query")
                     send_inline_query(update["inline_query"]["query"],
                                       update["inline_query"]["id"],
                                       searcher)
