@@ -3,6 +3,8 @@ load_dotenv()
 import os
 import sys
 import time
+import json
+import pprint
 
 TOKEN = os.getenv("TOKEN")
 
@@ -15,6 +17,11 @@ message_responses = {
     "what are you?": "Kono Dio Da!",
     "what are you": "Kono Dio Da!",
     "hi": "_Oh, you're approaching me?_",
+}
+audios = {
+    "Kono Dio Da": ["https://www.myinstants.com/media/sounds/kono-dio-da99.mp3",
+                    "Kono Dio Da!",
+                    "kono-dio-da99"]
 }
 default_message = "Wryyyyyyy"
 LAST_UPDATE_FILE = "last_id.txt"
@@ -32,6 +39,22 @@ def send_message(text, chat_id):
 
     data = response.json()
 
+def send_inline_query(query, query_id):
+    results = []
+    for value in audios.values():
+        results.append({
+            "type": "audio",
+            "id": value[2],
+            "audio_url": value[0],
+            "title": value[1]
+        })
+    response = requests.post(f"{BASE_URL}/answerInlineQuery",
+                             json={
+                                "inline_query_id": query_id,
+                                "results": results
+                             })
+    pprint.pprint(response.json())
+
 update_url = "{}/getUpdates".format(BASE_URL)
 # headers = {'Prefer': 'wait=120'}
 
@@ -48,13 +71,16 @@ while True:
         data = response.json()
 
         for update in data["result"]:
-            print("\n" + str(update))
-            if "message" in update and not update["message"]["from"]["is_bot"]:
+            pprint.pprint(update)
+            if "message" in update and "text" in update["message"] and not update["message"]["from"]["is_bot"]:
                 text = update["message"]["text"].lower()
                 if text in message_responses:
                     send_message(message_responses[text], update["message"]["chat"]["id"])
                 else:
                     send_message(default_message, update["message"]["chat"]["id"])
+            if "inline_query" in update:
+                send_inline_query(update["inline_query"]["query"],
+                                  update["inline_query"]["id"])
             with open(LAST_UPDATE_FILE, "wt") as f:
                 last_update = update["update_id"] + 1
                 f.write(str(last_update))
