@@ -23,6 +23,13 @@ audios = {
                     "Kono Dio Da!",
                     "kono-dio-da99"]
 }
+gif_responses = [
+    "hello there",
+    "hello there!",
+    "hello there."
+]
+gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
+
 default_message = "Wryyyyyyy"
 LAST_UPDATE_FILE = "last_id.txt"
 
@@ -32,12 +39,24 @@ with open(LAST_UPDATE_FILE, "rt") as f:
 def send_message(text, chat_id):
     url = "{}/sendMessage".format(BASE_URL)
     params = {"chat_id": chat_id,
-                "text": text,
-                "parse_mode": "Markdown"
+            "text": text,
+            "parse_mode": "Markdown"
             }
     response = requests.get(url=url, params=params)
 
     data = response.json()
+
+def send_gif_response(text, chat_id):
+    url = "{}/sendAnimation".format(BASE_URL)
+    params = {
+                "chat_id" : chat_id,
+                "animation_id" : gifs,
+            }
+    print("Building Response......")
+    response = requests.get(url=url, params=params)
+    print("Response built")
+    data = response.json()
+    print("Yeeting out of system")
 
 def send_inline_query(query, query_id):
     results = []
@@ -76,15 +95,20 @@ while True:
                 text = update["message"]["text"].lower()
                 if text in message_responses:
                     send_message(message_responses[text], update["message"]["chat"]["id"])
+                elif text in gif_responses:
+                    send_gif_response(text, update["message"]["chat"]["id"])
                 else:
                     send_message(default_message, update["message"]["chat"]["id"])
             if "inline_query" in update:
                 send_inline_query(update["inline_query"]["query"],
                                   update["inline_query"]["id"])
+            
+            print("starting something idk what")
             with open(LAST_UPDATE_FILE, "wt") as f:
                 last_update = update["update_id"] + 1
                 f.write(str(last_update))
 
+            print("ending something idk what")
     elif response.status_code != 304:
         time.sleep(60)
 
