@@ -104,14 +104,19 @@ writer.add_document(
     id="arrivederci")
 writer.add_document(
     keywords="muda muda muda",
-    audio_url="https://www.myinstants.com/media/sounds/muda-muda-online-audio-converter.mp3",
+    audio_url="https://www.myinstants.com/media/sounds/mudamudamudamudamudamudamudamudamudamuda_1.mp3",
     title="muda muda muda",
-    id="muda muda muda")
+    id="mudamudamudamudamudamudamudamudamudamuda")
 writer.add_document(
     keywords="HINJAKU HINJAKU",
     audio_url="https://www.myinstants.com/media/sounds/tumblr_n5dxckfvob1sh11j9o1.mp3",
     title="HINJAKU HINJAKU",
     id="HINJAKU HINJAKU")
+writer.add_document(
+    keywords="yare yare daze",
+    audio_url="https://www.myinstants.com/media/sounds/yare-yare-daze_zAnWvX6.mp3",
+    title="Yare Yare Daze",
+    id="Yare Yare Daze")
 writer.commit()
 
 parser = qparser.QueryParser("keywords", ix.schema)
