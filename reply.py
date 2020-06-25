@@ -50,13 +50,11 @@ def send_gif_response(text, chat_id):
     url = "{}/sendAnimation".format(BASE_URL)
     params = {
                 "chat_id" : chat_id,
-                "animation_id" : gifs,
-            }
-    print("Building Response......")
+                "animation" : gifs,
+             }
     response = requests.get(url=url, params=params)
-    print("Response built")
     data = response.json()
-    print("Yeeting out of system")
+    pprint.pprint(data)
 
 def send_inline_query(query, query_id):
     results = []
@@ -77,10 +75,11 @@ def send_inline_query(query, query_id):
 update_url = "{}/getUpdates".format(BASE_URL)
 # headers = {'Prefer': 'wait=120'}
 
-print("Starting...")
+print("Listening...")
 
 while True:
     print(".", end="")
+    sys.stdout.flush()
     update_params = {"offset": last_update, "timeout": 5}
     # headers = {'Prefer': 'wait=120'}
     headers = {}
@@ -102,13 +101,9 @@ while True:
             if "inline_query" in update:
                 send_inline_query(update["inline_query"]["query"],
                                   update["inline_query"]["id"])
-            
-            print("starting something idk what")
             with open(LAST_UPDATE_FILE, "wt") as f:
                 last_update = update["update_id"] + 1
                 f.write(str(last_update))
-
-            print("ending something idk what")
     elif response.status_code != 304:
         time.sleep(60)
 
