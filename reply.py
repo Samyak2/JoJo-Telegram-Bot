@@ -5,6 +5,7 @@ import json
 import time
 import sys
 import os
+from test import return_post
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -12,17 +13,25 @@ load_dotenv()
 TOKEN = os.getenv("TOKEN")
 BASE_URL = "https://api.telegram.org/bot{}".format(TOKEN)
 message_responses = {
-    "who are you?": "Kono Dio Da!",
-    "who are you": "Kono Dio Da!",
-    "what are you?": "Kono Dio Da!",
-    "what are you": "Kono Dio Da!",
-    "hi": "_Oh, you're approaching me?_",
-}
+        "who are you?": "Kono Dio Da!",
+        "who are you": "Kono Dio Da!",
+        "what are you?": "Kono Dio Da!",
+        "what are you": "Kono Dio Da!",
+        "hi": "_Oh, you're approaching me?_",
+        }
 gif_responses = [
-    "hello there",
-    "hello there!",
-    "hello there."
-]
+        "hello there",
+        "hello there!",
+        "hello there."
+        ]
+
+meme_responses = [
+        "meme",
+        "jmeme",
+        "/meme",
+        "/jmeme"
+        ]
+
 gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
 
 default_message = "Wryyyyyyy"
@@ -35,32 +44,43 @@ with open(LAST_UPDATE_FILE, "rt") as f:
 def send_message(text, chat_id):
     url = "{}/sendMessage".format(BASE_URL)
     params = {"chat_id": chat_id,
-              "text": text,
-              "parse_mode": "Markdown"
-              }
+            "text": text,
+            "parse_mode": "Markdown"
+            }
     response = requests.get(url=url, params=params)
-
+    pprint.pprint(data)
 
 def send_gif_response(text, chat_id):
     url = "{}/sendAnimation".format(BASE_URL)
     params = {
-        "chat_id": chat_id,
-        "animation": gifs,
-    }
+            "chat_id": chat_id,
+            "animation": gifs,
+            }
     response = requests.get(url=url, params=params)
     data = response.json()
     pprint.pprint(data)
 
+def send_meme_response(text, chat_id):
+    url = "{}/sendMessage".format(BASE_URL)
+    meme = return_post()
+    print(meme)
+    params = {
+            "chat_id": chat_id,
+            "text": meme,
+            }
+    response = requests.get(url=url, params=params)
+    data = response.json()
+    pprint.pprint(data)
 
 def send_inline_query(query, query_id, searcher):
     results = list(map(dict, searcher.search(parser.parse(query+"*"))))
     list(map(lambda x: x.update({"type": "audio"}), results))
     pprint.pprint(results)
     response = requests.post(f"{BASE_URL}/answerInlineQuery",
-                             json={
-                                 "inline_query_id": query_id,
-                                 "results": results
-                             })
+            json={
+                "inline_query_id": query_id,
+                "results": results
+                })
     pprint.pprint(response.json())
 
 
@@ -87,17 +107,20 @@ with ix.searcher() as searcher:
                     text = update["message"]["text"].lower()
                     if text in message_responses:
                         send_message(
-                            message_responses[text], update["message"]["chat"]["id"])
+                                message_responses[text], update["message"]["chat"]["id"])
                     elif text in gif_responses:
                         send_gif_response(
-                            text, update["message"]["chat"]["id"])
+                                text, update["message"]["chat"]["id"])
+                    elif text in meme_responses:
+                        send_meme_response(
+                                text, update["message"]["chat"]["id"])
                     else:
                         send_message(default_message,
-                                     update["message"]["chat"]["id"])
+                                update["message"]["chat"]["id"])
                 if "inline_query" in update:
                     send_inline_query(update["inline_query"]["query"],
-                                      update["inline_query"]["id"],
-                                      searcher)
+                                    update["inline_query"]["id"],
+                                    searcher)
                 with open(LAST_UPDATE_FILE, "wt") as f:
                     last_update = update["update_id"] + 1
                     f.write(str(last_update))

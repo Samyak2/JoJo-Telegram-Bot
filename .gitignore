@@ -1,4 +1,5 @@
 .env
+.secret-keys.json
 .vscode/
 README.html
 *__pycache__
