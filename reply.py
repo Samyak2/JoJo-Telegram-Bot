@@ -8,7 +8,7 @@ from reddit_wrapper import return_post
 from database import ix, parser
 load_dotenv()
 
-
+BOT_TAG = "@oh_youre_approaching_me_bot"
 TOKEN = os.getenv("TOKEN")
 BASE_URL = "https://api.telegram.org/bot{}".format(TOKEN)
 HELP_TEXT = """Welcome to JoJo Bot, the commands are 
@@ -55,7 +55,8 @@ meme_responses = [
         "meme",
         "jmeme",
         "/meme",
-        "/jmeme"
+        "/jmeme",
+        "/start"
         ]
 
 gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
@@ -148,6 +149,7 @@ with ix.searcher() as searcher:
                 if "message" in update and \
                    "text" in update["message"] and not update["message"]["from"]["is_bot"]:
                     text = update["message"]["text"].lower()
+                    text = text.replace(BOT_TAG, "")
                     print(f"\nGot message '{text}' from chat_id {update['message']['chat']['id']}")
                     if text in message_responses:
                         send_message(message_responses[text], update["message"]["chat"]["id"])
