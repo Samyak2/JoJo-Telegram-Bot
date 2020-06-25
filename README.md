@@ -20,8 +20,9 @@ Instructions to run the bot yourself, if you only want to interact with it use [
 
  - Create a `.env` file in the same directory.
  - Add your Bot Token to the `.env` file in this format
-
-    `TOKEN=<your bot token here>`
+   ```
+   TOKEN=<your bot token here>
+   ```
 
  - Run `reply.py` using `python reply.py` or `python3 reply.py`. This script runs infinitely and responds to messages.
 
