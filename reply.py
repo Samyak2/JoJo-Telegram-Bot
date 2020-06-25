@@ -80,7 +80,7 @@ def send_message(text, chat_id):
         pprint.pprint(response.json())
         print("*"*45)
     else:
-        print(f"Sent message to chat_id {chat_id}, replying to '{text}'")
+        print(f"Sent message to chat_id {chat_id}, replying with '{text}'")
 
 def send_gif_response(text, chat_id):
     url = "{}/sendAnimation".format(BASE_URL)
