@@ -13,15 +13,17 @@ reddit = praw.Reddit(client_id=client_id,
                      user_agent=user_agent)
 subreddit = reddit.subreddit('shitpostcrusaders')
 
+reddit_url = "https://www.reddit.com"
+
 top_100_posts = []
 
 def return_post():
     for submission in subreddit.top(limit=100):
-        top_100_posts.append(submission.url)
+        top_100_posts.append(submission.permalink)
 
     post = randint(0, 99)
 
-    return top_100_posts[post]
+    return reddit_url + top_100_posts[post]
 
 if __name__ == "__main__":
     print(return_post())
