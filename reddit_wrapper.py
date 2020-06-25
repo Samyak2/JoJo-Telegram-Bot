@@ -15,15 +15,10 @@ subreddit = reddit.subreddit('shitpostcrusaders')
 
 reddit_url = "https://www.reddit.com"
 
-top_100_posts = []
-
 def return_post():
-    for submission in subreddit.top(limit=100):
-        top_100_posts.append(submission.permalink)
+    post = subreddit.random().permalink
 
-    post = randint(0, 99)
-
-    return reddit_url + top_100_posts[post]
+    return reddit_url + post
 
 if __name__ == "__main__":
     print(return_post())
