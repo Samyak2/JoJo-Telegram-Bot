@@ -117,6 +117,26 @@ writer.add_document(
     audio_url="https://www.myinstants.com/media/sounds/yare-yare-daze_zAnWvX6.mp3",
     title="Yare Yare Daze",
     id="Yare Yare Daze")
+writer.add_document(
+    keywords="oh my god joseph joestar",
+    audio_url="https://www.myinstants.com/media/sounds/oh-my-god-jojo.mp3",
+    title="Oh My God",
+    id="Oh My God")
+writer.add_document(
+    keywords="holy shit joseph joestar",
+    audio_url="https://www.myinstants.com/media/sounds/holy-shit-jojo.mp3",
+    title="Holy Shit",
+    id="Holy Shit")
+writer.add_document(
+    keywords="giorno theme giorno giovanna piano",
+    audio_url="https://www.myinstants.com/media/sounds/giornos-theme-but-only-the-best-part-is-in_vwd15lya_lyb0-online-audio-converter.mp3",
+    title="Giorno's Theme",
+    id="Giono's Theme")
+writer.add_document(
+    keywords="i giorno giovanna have a dream kono giorno giovanna niwa yume ga aru",
+    audio_url="https://www.myinstants.com/media/sounds/test_TUQkBD1.mp3",
+    title="I Giorno Giovanna have a dream",
+    id="I Giorno Giovanna have a dream")
 writer.commit()
 
 parser = qparser.QueryParser("keywords", ix.schema)
