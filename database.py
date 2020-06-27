@@ -137,6 +137,16 @@ writer.add_document(
     audio_url="https://www.myinstants.com/media/sounds/test_TUQkBD1.mp3",
     title="I Giorno Giovanna have a dream",
     id="I Giorno Giovanna have a dream")
+writer.add_document(
+    keywords="daga kotowaru i refuse rohan kishibe",
+    audio_url="https://www.myinstants.com/media/sounds/daga-kotowaru-aetrim1501520644485.mp3",
+    title="Daga Kotowaru",
+    id="Daga Kotowaru")
+writer.add_document(
+    keywords="oh you're approaching me mukkate kuru nu ka dio brando",
+    audio_url="https://www.myinstants.com/media/sounds/oh-youre-approaching-me.mp3",
+    title="Oh You're Approaching Me?",
+    id="Oh You're Approaching Me?")
 writer.commit()
 
 parser = qparser.QueryParser("keywords", ix.schema)
