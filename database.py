@@ -147,6 +147,36 @@ writer.add_document(
     audio_url="https://www.myinstants.com/media/sounds/oh-youre-approaching-me.mp3",
     title="Oh You're Approaching Me?",
     id="Oh You're Approaching Me?")
+writer.add_document(
+    keywords="ari ari sticky fingers arrideverci bruno bucciarati",
+    audio_url="https://www.myinstants.com/media/sounds/music-editor-trim-extract-convert-and-mix-audio20191225124228.mp3",
+    title="Ari ari ari",
+    id="Ari ari ari")
+writer.add_document(
+    keywords="20m emerald splash kakyoin heirophant green",
+    audio_url="https://www.myinstants.com/media/sounds/emeraldsplash.mp3",
+    title="Emerald Splash",
+    id="Emerald Splash")
+writer.add_document(
+    keywords="oh no young joseph joestar",
+    audio_url="https://www.myinstants.com/media/sounds/joseph-joestar-_oh-no_.mp3",
+    title="Oh No Joseph",
+    id="oh no young joseph")
+writer.add_document(
+    keywords="six pistols mista part 5",
+    audio_url="https://www.myinstants.com/media/sounds/sex-pistols.mp3",
+    title="Six Pistols",
+    id="Six Pistols")
+writer.add_document(
+    keywords="fighting gold part 5 golden experience Giorno Giovanna",
+    audio_url="https://www.myinstants.com/media/sounds/tmpqsrd7iv7.mp3",
+    title="Fighting Gold",
+    id="Fighting Gold")
+writer.add_document(
+    keywords="shizaaa shiiizaa caesar death part 2",
+    audio_url="https://www.myinstants.com/media/sounds/shizaaaaaa_w7zSfcu.mp3",
+    title="Shiiiizaaaa",
+    id="Shiiizaaa")
 writer.commit()
 
 parser = qparser.QueryParser("keywords", ix.schema)
