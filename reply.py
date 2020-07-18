@@ -61,7 +61,7 @@ meme_responses = [
 
 gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
 
-default_message = "Wryyyyyyy! If your looking for options try /?,/help or reply to this with ?,help"
+default_message = "Wryyyyyyy! Try /help if you're looking for options."
 LAST_UPDATE_FILE = "last_id.txt"
 
 with open(LAST_UPDATE_FILE, "rt") as f:
