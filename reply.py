@@ -48,7 +48,8 @@ help_reponses = [
         "help?",
         "/help",
         "/?",
-        "?"
+        "?",
+        "/start"
         ]
 
 meme_responses = [
@@ -56,7 +57,6 @@ meme_responses = [
         "jmeme",
         "/meme",
         "/jmeme",
-        "/start"
         ]
 
 gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
