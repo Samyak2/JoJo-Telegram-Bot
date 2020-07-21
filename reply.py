@@ -2,6 +2,7 @@ import pprint
 import time
 import sys
 import os
+import urllib3
 import requests
 from dotenv import load_dotenv
 from reddit_wrapper import return_post
@@ -11,6 +12,8 @@ load_dotenv()
 BOT_TAG = "@oh_youre_approaching_me_bot"
 TOKEN = os.getenv("TOKEN")
 BASE_URL = "https://api.telegram.org/bot{}".format(TOKEN)
+
+# configuration here
 HELP_TEXT = """Welcome to JoJo Bot, the commands are 
                     -- what/who are you?
                     -- hi
@@ -24,6 +27,7 @@ HELP_TEXT = """Welcome to JoJo Bot, the commands are
                     -- ?
                     -- /?
 You can tag the bot from a chat to get a soundboard!"""
+# when keys are matched, the corresponding value is sent
 message_responses = {
         "who are you?": "Kono Dio Da!",
         "who are you": "Kono Dio Da!",
@@ -37,12 +41,14 @@ message_responses = {
         "?": HELP_TEXT
         }
 
+# messages for which GIF should be sent
 gif_responses = [
         "hello there",
         "hello there!",
         "hello there."
         ]
 
+# messages for which help text should be sent
 help_reponses = [
         "help",
         "help?",
@@ -52,6 +58,7 @@ help_reponses = [
         "/start"
         ]
 
+# messages for which a random reddit meme should be sent
 meme_responses = [
         "meme",
         "jmeme",
@@ -59,13 +66,23 @@ meme_responses = [
         "/jmeme",
         ]
 
+# GIF to send
 gifs = "https://media.giphy.com/media/8JTFsZmnTR1Rs1JFVP/giphy.gif"
 
+# default message when nothing is matched
 default_message = "Wryyyyyyy! Try /help if you're looking for options."
-LAST_UPDATE_FILE = "last_id.txt"
 
+# to store ID of the last update processed
+LAST_UPDATE_FILE = "last_id.txt"
 with open(LAST_UPDATE_FILE, "rt") as f:
     last_update = int(f.read()) + 1
+
+# set up requests
+sess = requests.Session()
+retries = urllib3.util.retry.Retry(total=10,
+        backoff_factor=0.1,
+        status_forcelist=[500, 502, 503, 504])
+sess.mount("https://", requests.adapters.HTTPAdapter(max_retries=retries))
 
 def send_message(text, chat_id):
     url = "{}/sendMessage".format(BASE_URL)
@@ -74,7 +91,7 @@ def send_message(text, chat_id):
         "text": text,
         "parse_mode": "Markdown"
     }
-    response = requests.get(url=url, params=params)
+    response = sess.get(url=url, params=params)
     if response.status_code != requests.codes.ok: # pylint: disable=no-member
         print("*"*20, "ERROR", "*"*20)
         pprint.pprint(response.json())
@@ -88,7 +105,7 @@ def send_gif_response(text, chat_id):
         "chat_id": chat_id,
         "animation": gifs,
     }
-    response = requests.get(url=url, params=params)
+    response = sess.get(url=url, params=params)
     if response.status_code != requests.codes.ok: # pylint: disable=no-member
         print("*"*20, "ERROR", "*"*20)
         pprint.pprint(response.json())
@@ -104,7 +121,7 @@ def send_meme_response(text, chat_id):
         "chat_id": chat_id,
         "text": meme,
     }
-    response = requests.get(url=url, params=params)
+    response = sess.get(url=url, params=params)
     if response.status_code != requests.codes.ok: # pylint: disable=no-member
         print("*"*20, "ERROR", "*"*20)
         pprint.pprint(response.json())
@@ -115,7 +132,7 @@ def send_meme_response(text, chat_id):
 def send_inline_query(query, query_id, searcher):
     results = list(map(dict, searcher.search(parser.parse(query+"*"))))
     list(map(lambda x: x.update({"type": "audio"}), results))
-    response = requests.post(f"{BASE_URL}/answerInlineQuery",
+    response = sess.post(f"{BASE_URL}/answerInlineQuery",
                              json={
                                  "inline_query_id": query_id,
                                  "results": results
@@ -139,7 +156,7 @@ with ix.searcher() as searcher:
         update_params = {"offset": last_update, "timeout": 5}
         # headers = {'Prefer': 'wait=120'}
         headers = {}
-        response = requests.get(
+        response = sess.get(
             url=update_url, params=update_params, headers=headers)
 
         if response.status_code == 200:
