@@ -174,7 +174,9 @@ def main():
 
                 for update in data["result"]:
                     if "message" in update and \
-                       "text" in update["message"] and not update["message"]["from"]["is_bot"]:
+                            "text" in update["message"] and \
+                            not update["message"]["from"]["is_bot"] and \
+                            "reply_to_message" not in update["message"]:
                         text = update["message"]["text"].lower()
                         text = text.replace(BOT_TAG, "")
                         print(f"\nGot message '{text}'"
